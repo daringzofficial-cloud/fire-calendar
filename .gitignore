@@ -2,9 +2,12 @@
 data/raw/
 
 # Локальные файлы
-.claude/settings.local.json
-.impeccable/config.local.json
 __pycache__/
 *.pyc
 .venv/
 node_modules/
+
+# Инструменты разработки
+.claude/
+.impeccable/
+PRODUCT.md

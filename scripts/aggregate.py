@@ -76,7 +76,7 @@ def calibrate(grp: pd.DataFrame, nrt_from: dict) -> dict:
     """
     tab = grp.pivot_table(index="month", columns="sensor", values="n",
                           aggfunc="sum", fill_value=0)
-    for col in ("modis_terra", "modis_aqua", "viirs_snpp"):
+    for col in ("modis_terra", "modis_aqua", "viirs_snpp", "viirs_noaa20"):
         if col not in tab.columns:
             tab[col] = 0
     tab["modis_all"] = tab["modis_terra"] + tab["modis_aqua"]
@@ -96,9 +96,19 @@ def calibrate(grp: pd.DataFrame, nrt_from: dict) -> dict:
     by_year = (ov.groupby("year")[["modis_all", "viirs_snpp"]].sum())
     by_year = (by_year["modis_all"] / by_year["viirs_snpp"]).round(3).to_dict()
 
+    # NOAA-20 продолжает ряд после окончания S-NPP. Общий период с MODIS:
+    # с первого полного месяца NOAA-20 (2018-05) до начала NRT.
+    n20 = tab[(tab.index >= "2018-05") & (tab.index < end)]
+    n20 = n20[n20["viirs_noaa20"] > 0]
+    k_n20 = (float(n20["modis_all"].sum() / n20["viirs_noaa20"].sum())
+             if len(n20) else None)
+
     return {
         "reference": "modis_all (Terra + Aqua)",
         "viirs_snpp_to_modis": round(k, 4),
+        "viirs_noaa20_to_modis": round(k_n20, 4) if k_n20 else None,
+        "terra_only_through": "2002-07",
+        "modis_through": "2012-01",
         "terra_only_to_modis": round(t_scale, 4),
         "overlap_months": [ov.index.min(), ov.index.max(), int(len(ov))],
         "monthly_correlation": round(corr, 3),
@@ -107,9 +117,9 @@ def calibrate(grp: pd.DataFrame, nrt_from: dict) -> dict:
         "viirs_snpp_starts": "2012-01",
         "note": ("Согласованный ряд: Terra*terra_only_to_modis до 2002-07; "
                  "MODIS Terra+Aqua 2002-08..2012-01; "
-                 "VIIRS S-NPP*viirs_snpp_to_modis с 2012-02. "
-                 "VIIRS NOAA-20 используется только для проверки и "
-                 "свежих недель."),
+                 "VIIRS S-NPP*viirs_snpp_to_modis с 2012-02, пока есть "
+                 "полные месяцы S-NPP; дальше VIIRS NOAA-20*"
+                 "viirs_noaa20_to_modis."),
     }
 
 
@@ -214,6 +224,8 @@ def main() -> None:
     # NRT у каждого датчика начинается в свой день: сохраняем границу по датчикам
     nrt_from = {s: g["month"].min()
                 for s, g in df[df["is_nrt"]].groupby("sensor")}
+    first_date = df.groupby("sensor")["acq_date"].min().to_dict()
+    last_date = df.groupby("sensor")["acq_date"].max().to_dict()
     calibration = calibrate(grp, nrt_from)
 
     out = {
@@ -225,6 +237,10 @@ def main() -> None:
             "sensors": sensors,
             "nrt_months": nrt_months,
             "nrt_from_by_sensor": nrt_from,
+            "first_date": first_date,
+            "last_date": last_date,
+            "static_cells": len(static_cells),
+            "dropped_static": int(drop.sum()),
             "filters": {"min_conf_modis": args.min_conf, "viirs": "без low",
                         "drop_type_2": has_type, "static_cell_deg": STATIC_GRID,
                         "static_min": args.static_min},
@@ -246,6 +262,13 @@ def main() -> None:
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as fh:
         json.dump(out, fh, separators=(",", ":"), ensure_ascii=False)
+    # Копия в виде скрипта: приложение открывается двойным щелчком по
+    # index.html, без локального сервера (fetch не работает с file://).
+    js_path = os.path.splitext(args.out)[0] + ".js"
+    with open(js_path, "w", encoding="utf-8") as fh:
+        fh.write("window.FIRE_GRID=")
+        json.dump(out, fh, separators=(",", ":"), ensure_ascii=False)
+        fh.write(";")
     size = os.path.getsize(args.out) / 1e6
     print(f"Ячеек: {len(cells):,}; строк: {len(grp):,}; месяцев: {len(months)}")
     print(f"Датчики: {sensors}")

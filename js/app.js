@@ -209,9 +209,15 @@
   });
   function endDrag() {
     if (!drag) return;
-    var big = Math.abs(drag.x1 - drag.x0) > 5 && Math.abs(drag.y1 - drag.y0) > 5, box = dragBox();
+    var dx = Math.abs(drag.x1 - drag.x0), dy = Math.abs(drag.y1 - drag.y0), box = dragBox();
+    if (dx <= 5 && dy <= 5) {
+      // простое нажатие: участок 1 x 1 градус вокруг точки
+      var lon = MAPB.w + drag.x0 / mapW * (MAPB.e - MAPB.w), lat = MAPB.n - drag.y0 / mapH * (MAPB.n - MAPB.s);
+      lon = Math.round(lon / M.g) * M.g; lat = Math.round(lat / M.g) * M.g;
+      box = snapBox(lon - 0.5, lat - 0.5, lon + 0.5, lat + 0.5);
+    }
     drag = null;
-    if (big && box) setBbox(box); else drawMap();
+    if (box) setBbox(box); else drawMap();
   }
   cv.addEventListener('pointerup', endDrag);
   cv.addEventListener('pointercancel', endDrag);

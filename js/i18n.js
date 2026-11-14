@@ -8,7 +8,7 @@ window.FireI18n = {
     noData: 'Не найден файл data/processed/grid.js. Запустите в корне проекта: python scripts/aggregate.py',
 
     regionTitle: 'Область',
-    regionHint: 'Обведите прямоугольник на карте или введите координаты.',
+    regionHint: 'Нажмите на карту, чтобы выбрать участок 1° × 1°, или обведите свой прямоугольник, зажав кнопку мыши.',
     mapLegend: 'Очагов в год на ячейку {g}°, MODIS-эквивалент, {b0}–{b1}',
     mapAria: 'Карта Казахстана: среднее число очагов по ячейкам. Область можно задать координатами ниже.',
     south: 'Юг, °с. ш.', north: 'Север, °с. ш.', west: 'Запад, °в. д.', east: 'Восток, °в. д.',
@@ -89,7 +89,7 @@ window.FireI18n = {
     noData: 'File data/processed/grid.js was not found. From the project root run: python scripts/aggregate.py',
 
     regionTitle: 'Region',
-    regionHint: 'Drag a rectangle on the map or type coordinates.',
+    regionHint: 'Click the map to select a 1° × 1° area, or hold the mouse button and drag your own rectangle.',
     mapLegend: 'Detections per year per {g}° cell, MODIS-equivalent, {b0}–{b1}',
     mapAria: 'Map of Kazakhstan: mean detections per grid cell. The region can also be set with the coordinates below.',
     south: 'South, °N', north: 'North, °N', west: 'West, °E', east: 'East, °E',

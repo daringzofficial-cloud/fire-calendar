@@ -103,6 +103,7 @@
     cur.an = C.analyze(M, cur.agg, b[0], b[1]);
     cur.val = C.validation(M, cur.agg);
     cur.area = C.area(M, cur.ids);
+    window.FIRE_CUR = cur;
   }
 
   /* ---------- легенды ---------- */
@@ -650,7 +651,7 @@
   function renderAll() {
     drawMap(); renderRegion(); renderVerdict(); renderCalendar(); renderDetail(); renderValidation(); renderMethod();
   }
-  function update() { recompute(); renderAll(); }
+  function update() { recompute(); renderAll(); document.dispatchEvent(new Event('fire:update')); }
 
   var resizeTimer = null;
   window.addEventListener('resize', function () {

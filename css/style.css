@@ -140,3 +140,17 @@ select { width: auto; padding-right: 26px; }
 .live-map .hint { margin-top: 6px; }
 .live-note { margin-top: 14px; }
 @media (max-width: 900px) { .live-grid { grid-template-columns: 1fr; } .live-num { font-size: 44px; } }
+
+/* Блок «Ожидаемая активность» */
+.pred-rows { display: grid; gap: 14px; margin-top: 6px; }
+.pred-row { display: grid; grid-template-columns: 150px minmax(0, 1fr) 260px; gap: 8px 18px; align-items: center; }
+.pred-name { font-weight: 600; color: var(--ink); }
+.pred-track { position: relative; height: 18px; background: #eef2f1; border-radius: 3px; }
+.pred-band { position: absolute; top: 0; bottom: 0; background: #b9d6d8; border-radius: 3px; }
+.pred-mid { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1.5px; background: var(--accent); border-radius: 2px; }
+.pred-now { position: absolute; top: -5px; bottom: -5px; width: 2px; margin-left: -1px; background: var(--danger); }
+.pred-txt { font-size: 14px; color: var(--ink-2); }
+.pred-sofar { color: var(--danger); }
+.pred-unit { margin-bottom: 4px; }
+.pred-note { margin-top: 10px; }
+@media (max-width: 900px) { .pred-row { grid-template-columns: 1fr; gap: 4px; } }

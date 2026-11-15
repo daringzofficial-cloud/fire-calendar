@@ -7,16 +7,16 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  var INK = '#f3ede6', INK2 = '#c2b8ad', INK3 = '#8d8379', LINE = '#3a332d', NEUTRAL = '#7d746c', CELL_INK = '#1a1613', EMPTY = '#1f1b18', PAGE = '#13110f';
+  var INK = '#1c1917', INK2 = '#4a443f', INK3 = '#6b635c', LINE = '#d8d1c9', NEUTRAL = '#978f88';
   var FONT = '"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif';
   // Величина: один оттенок, от светлого к тёмному. Отклонение: синий и красный вокруг серой середины.
   var SEQ = ['#fdebd3', '#fbd3a4', '#f7b46b', '#ef9140', '#de6d22', '#bb4f14', '#8f380e'];
-  var DIV = ['#1f5aa6', '#4a8fe0', '#a3c8f2', '#57504a', '#f2b1a2', '#e0604a', '#a9301d'];
+  var DIV = ['#184f95', '#3987e5', '#9ec5f4', '#e9e8e4', '#f4b3a6', '#de5a45', '#9a2a1a'];
   var DIV_EDGES = [0.4, 0.67, 0.9, 1.1, 1.5, 2.5];
   var DIV_LABELS = ['< −60%', '−60…−33%', '−33…−10%', null, '+10…+50%', '+50…+150%', '> +150%'];
   var MAP_EDGES = [1, 3, 7, 12, 20, 40];
   var MAP_LABELS = ['< 1', '1–3', '3–7', '7–12', '12–20', '20–40', '40+'];
-  var SERIES = { modis: '#6aa6ec', viirs: '#ef8a45' };
+  var SERIES = { modis: '#2a78d6', viirs: '#e0762a' };
 
   function loadLang() {
     try { var v = localStorage.getItem('fc-lang'); if (v === 'ru' || v === 'en') return v; } catch (e) { /* хранилище недоступно */ }
@@ -80,7 +80,7 @@
   }
   function textOn(hex) {
     var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
-    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.55 ? CELL_INK : '#ffffff';
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.55 ? INK : '#ffffff';
   }
   function yearOf(mi) { return M.y0 + Math.floor(mi / 12); }
   function lastDateOf(mi) { return M.meta.last_date[M.sourceDefs[M.source[mi]].sensors[0]]; }
@@ -321,7 +321,7 @@
     if (forExport) {
       var b = state.bbox;
       var where = b ? t('exportBox', { s: nf2.format(b.s), n: nf2.format(b.n), w: nf2.format(b.w), e: nf2.format(b.e) }) : t('exportAll');
-      o.push('<rect width="' + W + '" height="' + Hh + '" fill="' + PAGE + '"/>');
+      o.push('<rect width="' + W + '" height="' + Hh + '" fill="#ffffff"/>');
       o.push('<text x="' + CAL.L + '" y="26" font-size="18" font-weight="600" fill="' + INK + '">' + esc(t('exportTitle')) + '</text>');
       o.push('<text x="' + CAL.L + '" y="46" font-size="13" fill="' + INK2 + '">' + esc(where + '. ' +
         (anomaly ? t('viewAnomaly') : t('viewCount')) + '. ' + t('dNorm', { a: an.bY0, b: an.bY1 }) + '.') + '</text>');
@@ -339,15 +339,15 @@
       for (cm = 0; cm < 12; cm++) {
         mi = (y - M.y0) * 12 + cm;
         var x = CAL.L + cm * CAL.cw;
-        if (!M.hasData[mi]) { o.push('<rect x="' + x + '" y="' + yy + '" width="' + w + '" height="' + h + '" rx="2" fill="' + EMPTY + '"/>'); continue; }
+        if (!M.hasData[mi]) { o.push('<rect x="' + x + '" y="' + yy + '" width="' + w + '" height="' + h + '" rx="2" fill="#efece8"/>'); continue; }
         var r = an.ratio[mi], fill, label, tfill, extra = '';
         var tip = cap(mLong[cm]) + ' ' + y + ': ' + fmt(H[mi]);
         if (M.partial[mi]) {
-          fill = '#1b1714'; label = compact(H[mi]); tfill = INK2;
+          fill = '#ffffff'; label = compact(H[mi]); tfill = INK2;
           extra = ' stroke="' + INK3 + '" stroke-dasharray="3 2"';
           tip += ' (' + t('partialNote') + ')';
         } else if (anomaly) {
-          if (isNaN(r)) { fill = '#2a2420'; label = compact(H[mi]); tfill = INK3; }
+          if (isNaN(r)) { fill = '#f1eeea'; label = compact(H[mi]); tfill = INK3; }
           else { fill = DIV[bin(r, DIV_EDGES)]; label = pct(r); tfill = textOn(fill); tip += ', ' + pct(r); }
         } else {
           fill = SEQ[H[mi] <= 0 ? 0 : bin(H[mi], cur.seqEdges)]; label = compact(H[mi]); tfill = textOn(fill);
@@ -355,7 +355,7 @@
         o.push('<rect class="cell" data-mi="' + mi + '" x="' + x + '" y="' + yy + '" width="' + w + '" height="' + h + '" rx="2" fill="' + fill + '"' + extra + '><title>' + esc(tip) + '</title></rect>');
         o.push('<text x="' + (x + w / 2) + '" y="' + (yy + h / 2 + 4) + '" text-anchor="middle" font-size="11.5" fill="' + tfill + '" pointer-events="none">' + esc(label) + '</text>');
         if (M.nrt[mi]) {
-          o.push('<path d="M' + (x + w - 7) + ' ' + yy + 'h7v7z" fill="' + (tfill === '#ffffff' ? '#ffffff' : CELL_INK) + '" fill-opacity="0.75" pointer-events="none"/>');
+          o.push('<path d="M' + (x + w - 7) + ' ' + yy + 'h7v7z" fill="' + (tfill === '#ffffff' ? '#ffffff' : INK) + '" fill-opacity="0.75" pointer-events="none"/>');
         }
         if (cm > 0 && M.hasData[mi - 1] && M.source[mi] !== M.source[mi - 1]) {
           o.push('<line x1="' + (x - 1) + '" y1="' + (yy - 2) + '" x2="' + (x - 1) + '" y2="' + (yy + h + 2) + '" stroke="' + INK + '" stroke-width="2.5" pointer-events="none"/>');
@@ -418,10 +418,10 @@
       ls.push('≥ ' + compact(e[e.length - 1]));
       h = scaleHTML(t('legCount'), SEQ, ls);
     }
-    h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#1b1714" stroke="' + INK3 + '" stroke-dasharray="3 2"/>', t('legPartial'));
-    h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#57504a"/><path d="M14 2h7v7z" fill="#ffffff" fill-opacity="0.75"/>', t('legNrt'));
-    h += keyHTML('<rect x="1" y="2" width="9" height="12" rx="2" fill="#57504a"/><rect x="12" y="2" width="9" height="12" rx="2" fill="#57504a"/><line x1="11" y1="0" x2="11" y2="16" stroke="' + INK + '" stroke-width="2.5"/>', t('legSeam'));
-    if (anomaly) h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#2a2420"/><text x="11" y="12" text-anchor="middle" font-size="9" fill="' + INK3 + '">3</text>', t('legLow'));
+    h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#fff" stroke="' + INK3 + '" stroke-dasharray="3 2"/>', t('legPartial'));
+    h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#e9e8e4"/><path d="M14 2h7v7z" fill="' + INK + '" fill-opacity="0.75"/>', t('legNrt'));
+    h += keyHTML('<rect x="1" y="2" width="9" height="12" rx="2" fill="#e9e8e4"/><rect x="12" y="2" width="9" height="12" rx="2" fill="#e9e8e4"/><line x1="11" y1="0" x2="11" y2="16" stroke="' + INK + '" stroke-width="2.5"/>', t('legSeam'));
+    if (anomaly) h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#f1eeea"/><text x="11" y="12" text-anchor="middle" font-size="9" fill="' + INK3 + '">3</text>', t('legLow'));
     $('calLegend').innerHTML = h;
   }
 
@@ -503,8 +503,8 @@
       chart.innerHTML = ''; $('valLegend').innerHTML = ''; read.textContent = t('valEmpty'); return;
     }
     $('valLegend').innerHTML =
-      keyHTML('<line x1="0" y1="8" x2="22" y2="8" stroke="' + SERIES.modis + '" stroke-width="2"/><circle cx="11" cy="8" r="4" fill="' + SERIES.modis + '" stroke="' + PAGE + '" stroke-width="1.5"/>', t('valModis')) +
-      keyHTML('<line x1="0" y1="8" x2="22" y2="8" stroke="' + SERIES.viirs + '" stroke-width="2"/><rect x="7.5" y="4.5" width="7" height="7" fill="' + PAGE + '" stroke="' + SERIES.viirs + '" stroke-width="2"/>', t('valViirs', { k: k }));
+      keyHTML('<line x1="0" y1="8" x2="22" y2="8" stroke="' + SERIES.modis + '" stroke-width="2"/><circle cx="11" cy="8" r="4" fill="' + SERIES.modis + '" stroke="#fff" stroke-width="1.5"/>', t('valModis')) +
+      keyHTML('<line x1="0" y1="8" x2="22" y2="8" stroke="' + SERIES.viirs + '" stroke-width="2"/><rect x="7.5" y="4.5" width="7" height="7" fill="#fff" stroke="' + SERIES.viirs + '" stroke-width="2"/>', t('valViirs', { k: k }));
 
     var W = 620, Hh = 250, ml = 58, mr = 12, mt = 12, mb = 28, n = ys.length;
     var ymax = niceMax(vmax), bw = (W - ml - mr) / n;
@@ -514,7 +514,7 @@
       '" font-family=\'' + FONT + '\' font-size="11.5" style="font-variant-numeric:tabular-nums">'];
     [0, 0.5, 1].forEach(function (f) {
       var yy = Math.round(Y(ymax * f)) + 0.5;
-      o.push('<line x1="' + ml + '" y1="' + yy + '" x2="' + (W - mr) + '" y2="' + yy + '" stroke="' + (f === 0 ? '#5a5048' : '#2a2420') + '"/>');
+      o.push('<line x1="' + ml + '" y1="' + yy + '" x2="' + (W - mr) + '" y2="' + yy + '" stroke="' + (f === 0 ? '#b5ada5' : '#e6e0d9') + '"/>');
       o.push('<text x="' + (ml - 8) + '" y="' + (yy + 4) + '" text-anchor="end" fill="' + INK3 + '">' + esc(fmt(ymax * f)) + '</text>');
     });
     var pm = '', pv = '';
@@ -527,8 +527,8 @@
     o.push('<path d="' + pm + '" fill="none" stroke="' + SERIES.modis + '" stroke-width="2" stroke-linejoin="round"/>');
     o.push('<path d="' + pv + '" fill="none" stroke="' + SERIES.viirs + '" stroke-width="2" stroke-linejoin="round"/>');
     ys.forEach(function (q, i) {
-      o.push('<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(q.modis).toFixed(1) + '" r="4" fill="' + SERIES.modis + '" stroke="' + PAGE + '" stroke-width="1.5"/>');
-      o.push('<rect x="' + (X(i) - 3.5).toFixed(1) + '" y="' + (Y(q.viirs) - 3.5).toFixed(1) + '" width="7" height="7" fill="' + PAGE + '" stroke="' + SERIES.viirs + '" stroke-width="2"/>');
+      o.push('<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(q.modis).toFixed(1) + '" r="4" fill="' + SERIES.modis + '" stroke="#fff" stroke-width="1.5"/>');
+      o.push('<rect x="' + (X(i) - 3.5).toFixed(1) + '" y="' + (Y(q.viirs) - 3.5).toFixed(1) + '" width="7" height="7" fill="#fff" stroke="' + SERIES.viirs + '" stroke-width="2"/>');
     });
     ys.forEach(function (q, i) {
       o.push('<rect class="band" data-i="' + i + '" x="' + (ml + i * bw).toFixed(1) + '" y="' + mt + '" width="' + bw.toFixed(1) + '" height="' + (Hh - mt - mb) + '" fill="transparent"/>');

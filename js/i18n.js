@@ -5,11 +5,11 @@ window.FireI18n = {
     docTitle: 'Календарь пожарной активности: Казахстан',
     title: 'Календарь пожарной активности',
     navMap: 'Карта', navPred: 'Прогноз', navCal: 'Календарь', navMethod: 'Метод',
-    subtitle: 'Нормальный ли сейчас пожарный сезон в Казахстане? Спутниковые данные NASA за {y0}–{y1}, сведённые в один ряд.',
+    subtitle: 'Спутники NASA замечают пожары в Казахстане с {y0} года. Мы свели данные двух приборов в один ряд, чтобы любой месяц можно было сравнить с нормой.',
     noData: 'Не найден файл data/processed/grid.js. Запустите в корне проекта: python scripts/aggregate.py',
 
-    regionTitle: 'Где горит',
-    regionHint: 'Чем светлее и выше участок, тем больше на нём очагов за год. Выберите область, и все блоки ниже пересчитаются для неё.',
+    regionTitle: 'Карта',
+    regionHint: 'Цвет и высота — сколько очагов за год было на участке 25 × 25 км. Выберите участок, и всё ниже пересчитается.',
     mapLegend: 'Очагов в год на ячейку {g}°, MODIS-эквивалент, {b0}–{b1}',
     mapAria: 'Карта Казахстана: среднее число очагов по ячейкам. Область можно задать координатами ниже.',
     south: 'Юг, °с. ш.', north: 'Север, °с. ш.', west: 'Запад, °в. д.', east: 'Восток, °в. д.',
@@ -31,8 +31,8 @@ window.FireI18n = {
     vPartial: '{month} {year} неполный: данные до {date}, пока {n}.',
     vWhere: 'Последний полный месяц в данных.',
 
-    calTitle: 'Год за годом, месяц за месяцем',
-    calHow: 'Строка — год, столбец — месяц. Синий: очагов меньше нормы, красный: больше. Нажмите на ячейку, чтобы увидеть подробности.',
+    calTitle: 'Календарь',
+    calHow: 'Синие клетки — месяцы спокойнее нормы, красные — тяжелее. Нажмите на клетку.',
     viewAnomaly: 'Отклонение от нормы', viewCount: 'Число очагов',
     viewLabel: 'Показать',
     yearsLabel: 'Годы', yearsTo: 'по',
@@ -66,7 +66,7 @@ window.FireI18n = {
     valEmpty: 'В этой области слишком мало очагов для проверки.',
 
     methodTitle: 'Как это посчитано',
-    methodHow: 'Коротко о данных, отборе и ограничениях.',
+    methodHow: 'Откуда данные и где метод может ошибаться.',
     method: [
       'Данные: архив NASA FIRMS по Казахстану. MODIS Collection 6.1 (Terra с {t0}, Aqua с {a0}) и VIIRS 375 м Collection 2 (S-NPP с {s0}, NOAA-20 с {n0}). Последняя дата в данных: {end}.',
       'Сетка: ячейки {g}° по месяцам. Мельче этой сетки приложение не различает.',
@@ -89,11 +89,11 @@ window.FireI18n = {
     docTitle: 'Fire activity calendar: Kazakhstan',
     title: 'Fire activity calendar',
     navMap: 'Map', navPred: 'Outlook', navCal: 'Calendar', navMethod: 'Method',
-    subtitle: 'Is the fire season in Kazakhstan normal right now? NASA satellite data for {y0}–{y1}, brought into one consistent record.',
+    subtitle: 'NASA satellites have spotted fires in Kazakhstan since {y0}. We merged two instruments into one record so any month can be compared with normal.',
     noData: 'File data/processed/grid.js was not found. From the project root run: python scripts/aggregate.py',
 
-    regionTitle: 'Where it burns',
-    regionHint: 'The brighter and taller a cell, the more detections it has per year. Select an area and every block below recalculates for it.',
+    regionTitle: 'Map',
+    regionHint: 'Colour and height show detections per year on a 25 × 25 km cell. Pick an area and everything below recalculates.',
     mapLegend: 'Detections per year per {g}° cell, MODIS-equivalent, {b0}–{b1}',
     mapAria: 'Map of Kazakhstan: mean detections per grid cell. The region can also be set with the coordinates below.',
     south: 'South, °N', north: 'North, °N', west: 'West, °E', east: 'East, °E',
@@ -115,8 +115,8 @@ window.FireI18n = {
     vPartial: '{month} {year} is incomplete: data up to {date}, {n} so far.',
     vWhere: 'Latest complete month in the data.',
 
-    calTitle: 'Year by year, month by month',
-    calHow: 'Each row is a year, each column a month. Blue means fewer detections than normal, red means more. Click a cell for details.',
+    calTitle: 'Calendar',
+    calHow: 'Blue cells are calmer months than normal, red ones are worse. Click a cell.',
     viewAnomaly: 'Anomaly against norm', viewCount: 'Detection count',
     viewLabel: 'Show',
     yearsLabel: 'Years', yearsTo: 'to',
@@ -150,7 +150,7 @@ window.FireI18n = {
     valEmpty: 'Too few detections in this region for a check.',
 
     methodTitle: 'How this was computed',
-    methodHow: 'Data, filters and limits in brief.',
+    methodHow: 'Where the data comes from and where the method can be wrong.',
     method: [
       'Data: NASA FIRMS archive for Kazakhstan. MODIS Collection 6.1 (Terra from {t0}, Aqua from {a0}) and VIIRS 375 m Collection 2 (S-NPP from {s0}, NOAA-20 from {n0}). Latest date in the data: {end}.',
       'Grid: {g}° cells by month. The app cannot resolve anything finer.',

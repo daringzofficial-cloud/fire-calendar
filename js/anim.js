@@ -81,7 +81,7 @@
   function prepCalendar(box) {
     var svg = box.querySelector('svg'), M = window.FIRE_MODEL;
     if (!svg) return;
-    each(svg.querySelectorAll('rect.cell, rect[fill="#1f1b18"]'), function (r) {
+    each(svg.querySelectorAll('rect.cell, rect[fill="#efece8"]'), function (r) {
       var col = Math.round((+r.getAttribute('x') - 56) / 58), row = Math.round((+r.getAttribute('y') - 24) / 28);
       var d = Math.min(row, 30) * 18 + col * 14;
       r.style.setProperty('--d', d + 'ms');

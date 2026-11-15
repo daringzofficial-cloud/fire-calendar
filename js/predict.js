@@ -11,7 +11,7 @@
   var T = {
     ru: {
       locale: 'ru-RU', title: 'Ожидаемая активность',
-      lead: 'Сколько очагов обычно бывает в ближайшие месяцы в выбранной области. Считаем по тем же месяцам за последние {w} лет. Это ориентир, а не прогноз пожаров.',
+      lead: 'Сколько очагов обычно бывает в эти месяцы, по последним {w} годам. Ориентир, а не прогноз пожаров.',
       typical: 'очагов в типичный месяц', usual: 'Обычно от {a} до {b}', now: 'сейчас уже {x}',
       chipIn: 'идёт, в пределах обычного', chipHi: 'идёт, выше обычного', chipAhead: 'через {h} мес.',
       lgBand: 'обычный диапазон (8 лет из 10)', lgMid: 'типичное значение', lgDot: 'отдельные годы, наведите для числа', lgNow: 'набрано в этом месяце',
@@ -21,7 +21,7 @@
     },
     en: {
       locale: 'en-GB', title: 'Expected activity',
-      lead: 'How many detections the selected area usually has in the coming months, based on the same months over the last {w} years. A guide, not a fire forecast.',
+      lead: 'How many detections these months usually have, based on the last {w} years. A guide, not a fire forecast.',
       typical: 'detections in a typical month', usual: 'Usually {a} to {b}', now: 'so far {x}',
       chipIn: 'ongoing, within normal', chipHi: 'ongoing, above normal', chipAhead: 'in {h} mo',
       lgBand: 'usual range (8 years in 10)', lgMid: 'typical value', lgDot: 'single years, hover for value', lgNow: 'so far this month',

@@ -7,7 +7,7 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  var INK = '#17211f', INK2 = '#47544f', INK3 = '#6f7b77', LINE = '#d3dad7', NEUTRAL = '#8b9794';
+  var INK = '#1c1917', INK2 = '#4a443f', INK3 = '#6b635c', LINE = '#d8d1c9', NEUTRAL = '#978f88';
   var FONT = '"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif';
   // Величина: один оттенок, от светлого к тёмному. Отклонение: синий и красный вокруг серой середины.
   var SEQ = ['#fdebd3', '#fbd3a4', '#f7b46b', '#ef9140', '#de6d22', '#bb4f14', '#8f380e'];
@@ -239,6 +239,8 @@
     setBbox(box);
   });
   $('resetBtn').addEventListener('click', function () { setBbox(null); });
+  // доступ для главной карты (js/mapview.js)
+  window.FIRE_APP = { state: state, setBbox: setBbox, snapBox: snapBox, MAPB: MAPB };
 
   function renderRegion() {
     $('mapLegend').innerHTML = scaleHTML(t('mapLegend', { g: nf2.format(M.g), b0: M.bY0, b1: M.bY1 }), SEQ, MAP_LABELS);
@@ -337,7 +339,7 @@
       for (cm = 0; cm < 12; cm++) {
         mi = (y - M.y0) * 12 + cm;
         var x = CAL.L + cm * CAL.cw;
-        if (!M.hasData[mi]) { o.push('<rect x="' + x + '" y="' + yy + '" width="' + w + '" height="' + h + '" rx="2" fill="#f3f5f4"/>'); continue; }
+        if (!M.hasData[mi]) { o.push('<rect x="' + x + '" y="' + yy + '" width="' + w + '" height="' + h + '" rx="2" fill="#efece8"/>'); continue; }
         var r = an.ratio[mi], fill, label, tfill, extra = '';
         var tip = cap(mLong[cm]) + ' ' + y + ': ' + fmt(H[mi]);
         if (M.partial[mi]) {
@@ -345,7 +347,7 @@
           extra = ' stroke="' + INK3 + '" stroke-dasharray="3 2"';
           tip += ' (' + t('partialNote') + ')';
         } else if (anomaly) {
-          if (isNaN(r)) { fill = '#f1f3f2'; label = compact(H[mi]); tfill = INK3; }
+          if (isNaN(r)) { fill = '#f1eeea'; label = compact(H[mi]); tfill = INK3; }
           else { fill = DIV[bin(r, DIV_EDGES)]; label = pct(r); tfill = textOn(fill); tip += ', ' + pct(r); }
         } else {
           fill = SEQ[H[mi] <= 0 ? 0 : bin(H[mi], cur.seqEdges)]; label = compact(H[mi]); tfill = textOn(fill);
@@ -419,7 +421,7 @@
     h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#fff" stroke="' + INK3 + '" stroke-dasharray="3 2"/>', t('legPartial'));
     h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#e9e8e4"/><path d="M14 2h7v7z" fill="' + INK + '" fill-opacity="0.75"/>', t('legNrt'));
     h += keyHTML('<rect x="1" y="2" width="9" height="12" rx="2" fill="#e9e8e4"/><rect x="12" y="2" width="9" height="12" rx="2" fill="#e9e8e4"/><line x1="11" y1="0" x2="11" y2="16" stroke="' + INK + '" stroke-width="2.5"/>', t('legSeam'));
-    if (anomaly) h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#f1f3f2"/><text x="11" y="12" text-anchor="middle" font-size="9" fill="' + INK3 + '">3</text>', t('legLow'));
+    if (anomaly) h += keyHTML('<rect x="1" y="2" width="20" height="12" rx="2" fill="#f1eeea"/><text x="11" y="12" text-anchor="middle" font-size="9" fill="' + INK3 + '">3</text>', t('legLow'));
     $('calLegend').innerHTML = h;
   }
 
@@ -512,7 +514,7 @@
       '" font-family=\'' + FONT + '\' font-size="11.5" style="font-variant-numeric:tabular-nums">'];
     [0, 0.5, 1].forEach(function (f) {
       var yy = Math.round(Y(ymax * f)) + 0.5;
-      o.push('<line x1="' + ml + '" y1="' + yy + '" x2="' + (W - mr) + '" y2="' + yy + '" stroke="' + (f === 0 ? '#aab4b1' : '#e6eae9') + '"/>');
+      o.push('<line x1="' + ml + '" y1="' + yy + '" x2="' + (W - mr) + '" y2="' + yy + '" stroke="' + (f === 0 ? '#b5ada5' : '#e6e0d9') + '"/>');
       o.push('<text x="' + (ml - 8) + '" y="' + (yy + 4) + '" text-anchor="end" fill="' + INK3 + '">' + esc(fmt(ymax * f)) + '</text>');
     });
     var pm = '', pv = '';

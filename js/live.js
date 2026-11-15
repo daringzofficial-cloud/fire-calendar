@@ -7,7 +7,8 @@
 
   var T = {
     ru: {
-      locale: 'ru-RU', title: 'Последние дни', updated: 'Обновлено {t} UTC',
+      locale: 'ru-RU', title: 'Последние дни',
+      how: 'Сколько очагов спутник увидел за последнюю неделю и много это или мало для этих дней.', updated: 'Обновлено {t} UTC',
       week: 'очагов за 7 дней', vs: 'к норме этих дней', normTxt: 'норма {n}',
       noNorm: 'сравнение недоступно', none: 'За последние 10 дней очагов не найдено.',
       chartTitle: 'По дням, MODIS-эквивалент', normLbl: 'норма', todayLbl: 'день не закончен',
@@ -17,7 +18,8 @@
       loadFail: 'Свежие данные пока недоступны.'
     },
     en: {
-      locale: 'en-GB', title: 'Latest days', updated: 'Updated {t} UTC',
+      locale: 'en-GB', title: 'Latest days',
+      how: 'How many detections the satellite saw over the last week, and whether that is a lot for these days.', updated: 'Updated {t} UTC',
       week: 'detections in 7 days', vs: 'vs normal for these days', normTxt: 'normal {n}',
       noNorm: 'no comparison available', none: 'No detections in the last 10 days.',
       chartTitle: 'By day, MODIS-equivalent', normLbl: 'normal', todayLbl: 'day not finished',
@@ -85,6 +87,7 @@
     var upd = fill(L.updated, { t: dt.format(new Date(data.generated)) });
     root.innerHTML =
       '<div class="panel-head"><h2 id="liveTitle">' + esc(L.title) + '</h2><p class="hint">' + esc(upd) + '</p></div>' +
+      '<p class="how">' + esc(L.how) + '</p>' +
       (total === 0 ? '<p class="hint">' + esc(L.none) + '</p>' :
       '<div class="live-grid">' +
         '<div class="live-stat"><p class="live-num">' + nf.format(Math.round(h7)) + '</p>' +
@@ -107,7 +110,7 @@
     cv.width = cw * r; cv.height = ch * r; cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
     var g = cv.getContext('2d'); g.setTransform(r, 0, 0, r, 0, 0);
     var X = function (lon) { return (lon - w) / (e - w) * cw; }, Yy = function (lat) { return (n - lat) / (n - s) * ch; };
-    g.fillStyle = '#e3e9e7';
+    g.fillStyle = '#e2dcd5';
     M.cells.forEach(function (c) {
       g.fillRect(X(c[1]), Yy(c[0] + M.g), Math.ceil(M.g / (e - w) * cw) + 0.5, Math.ceil(M.g / (n - s) * ch) + 0.5);
     });
@@ -118,7 +121,7 @@
       if (fresh) hot.push({ x: X(c[1] + M.g / 2), y: Yy(c[0] + M.g / 2) });
       g.beginPath();
       g.arc(X(c[1] + M.g / 2), Yy(c[0] + M.g / 2), Math.min(7, 2.5 + Math.sqrt(c[2]) * 1.2), 0, 6.2832);
-      g.fillStyle = fresh ? 'rgba(163,42,28,.9)' : 'rgba(163,42,28,.4)';
+      g.fillStyle = fresh ? 'rgba(176,61,26,.95)' : 'rgba(176,61,26,.38)';
       g.fill();
     });
     // точки за последние сутки отдаём модулю анимаций (пульсация поверх карты)

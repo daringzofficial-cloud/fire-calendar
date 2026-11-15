@@ -4,11 +4,11 @@ window.FireI18n = {
     locale: 'ru-RU',
     docTitle: 'Календарь пожарной активности: Казахстан',
     title: 'Календарь пожарной активности',
-    subtitle: 'Казахстан, {y0}–{y1}. Активные очаги MODIS и VIIRS в одном согласованном ряду.',
+    subtitle: 'Нормальный ли сейчас пожарный сезон в Казахстане? Спутниковые данные NASA за {y0}–{y1}, сведённые в один ряд.',
     noData: 'Не найден файл data/processed/grid.js. Запустите в корне проекта: python scripts/aggregate.py',
 
-    regionTitle: 'Область',
-    regionHint: 'Нажмите на карту, чтобы выбрать участок 1° × 1°, или обведите свой прямоугольник, зажав кнопку мыши.',
+    regionTitle: 'Где горит',
+    regionHint: 'Чем светлее и выше участок, тем больше на нём очагов за год. Выберите область, и все блоки ниже пересчитаются для неё.',
     mapLegend: 'Очагов в год на ячейку {g}°, MODIS-эквивалент, {b0}–{b1}',
     mapAria: 'Карта Казахстана: среднее число очагов по ячейкам. Область можно задать координатами ниже.',
     south: 'Юг, °с. ш.', north: 'Север, °с. ш.', west: 'Запад, °в. д.', east: 'Восток, °в. д.',
@@ -31,6 +31,7 @@ window.FireI18n = {
     vWhere: 'Последний полный месяц в данных.',
 
     calTitle: 'Год за годом, месяц за месяцем',
+    calHow: 'Строка — год, столбец — месяц. Синий: очагов меньше нормы, красный: больше. Нажмите на ячейку, чтобы увидеть подробности.',
     viewAnomaly: 'Отклонение от нормы', viewCount: 'Число очагов',
     viewLabel: 'Показать',
     yearsLabel: 'Годы', yearsTo: 'по',
@@ -64,6 +65,7 @@ window.FireI18n = {
     valEmpty: 'В этой области слишком мало очагов для проверки.',
 
     methodTitle: 'Как это посчитано',
+    methodHow: 'Коротко о данных, отборе и ограничениях.',
     method: [
       'Данные: архив NASA FIRMS по Казахстану. MODIS Collection 6.1 (Terra с {t0}, Aqua с {a0}) и VIIRS 375 м Collection 2 (S-NPP с {s0}, NOAA-20 с {n0}). Последняя дата в данных: {end}.',
       'Сетка: ячейки {g}° по месяцам. Мельче этой сетки приложение не различает.',
@@ -85,11 +87,11 @@ window.FireI18n = {
     locale: 'en-US',
     docTitle: 'Fire activity calendar: Kazakhstan',
     title: 'Fire activity calendar',
-    subtitle: 'Kazakhstan, {y0}–{y1}. MODIS and VIIRS active fire detections as one harmonized record.',
+    subtitle: 'Is the fire season in Kazakhstan normal right now? NASA satellite data for {y0}–{y1}, brought into one consistent record.',
     noData: 'File data/processed/grid.js was not found. From the project root run: python scripts/aggregate.py',
 
-    regionTitle: 'Region',
-    regionHint: 'Click the map to select a 1° × 1° area, or hold the mouse button and drag your own rectangle.',
+    regionTitle: 'Where it burns',
+    regionHint: 'The brighter and taller a cell, the more detections it has per year. Select an area and every block below recalculates for it.',
     mapLegend: 'Detections per year per {g}° cell, MODIS-equivalent, {b0}–{b1}',
     mapAria: 'Map of Kazakhstan: mean detections per grid cell. The region can also be set with the coordinates below.',
     south: 'South, °N', north: 'North, °N', west: 'West, °E', east: 'East, °E',
@@ -112,6 +114,7 @@ window.FireI18n = {
     vWhere: 'Latest complete month in the data.',
 
     calTitle: 'Year by year, month by month',
+    calHow: 'Each row is a year, each column a month. Blue means fewer detections than normal, red means more. Click a cell for details.',
     viewAnomaly: 'Anomaly against norm', viewCount: 'Detection count',
     viewLabel: 'Show',
     yearsLabel: 'Years', yearsTo: 'to',
@@ -145,6 +148,7 @@ window.FireI18n = {
     valEmpty: 'Too few detections in this region for a check.',
 
     methodTitle: 'How this was computed',
+    methodHow: 'Data, filters and limits in brief.',
     method: [
       'Data: NASA FIRMS archive for Kazakhstan. MODIS Collection 6.1 (Terra from {t0}, Aqua from {a0}) and VIIRS 375 m Collection 2 (S-NPP from {s0}, NOAA-20 from {n0}). Latest date in the data: {end}.',
       'Grid: {g}° cells by month. The app cannot resolve anything finer.',

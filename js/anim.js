@@ -210,8 +210,35 @@
     });
   }
 
+  /* ---------- 3D-наклон карточек за курсором ---------- */
+  function tilt(el) {
+    if (el.dataset.tilt) return;
+    el.dataset.tilt = '1';
+    el.classList.add('tilt');
+    if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+    el.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var r = el.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      el.style.setProperty('--ry', ((px - 0.5) * 10).toFixed(2) + 'deg');
+      el.style.setProperty('--rx', ((0.5 - py) * 8).toFixed(2) + 'deg');
+      el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+      el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+      el.classList.add('tilting');
+    });
+    el.addEventListener('pointerleave', function () {
+      el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg');
+      el.classList.remove('tilting');
+    });
+  }
+  function tiltAll() { each(document.querySelectorAll('.pc, .live-stat, #detail'), tilt); }
+
   function init() {
     watchBlocks();
+    tiltAll();
+    document.addEventListener('fire:update', function () { setTimeout(tiltAll, 0); });
+    new MutationObserver(function () { tiltAll(); }).observe(document.querySelector('main') || document.body, { childList: true, subtree: false });
+    var lp = $('livePanel'), pp = $('predPanel');
+    [lp, pp].forEach(function (p) { if (p) new MutationObserver(tiltAll).observe(p, { childList: true }); });
     var cal = $('calendar'), val = $('valChart'), live = $('livePanel'), method = $('method');
     var calAll = function (b) { prepCalendar(b); loopCalendar(b); };
     var valAll = function (b) { prepVal(b); loopVal(b); };

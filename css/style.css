@@ -29,10 +29,6 @@
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--bar-h) + 16px); }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.5 var(--body); }
-/* фон: горизонтали, как на топографической карте */
-body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: url("contours.svg") center / cover no-repeat; }
-.bar { background: rgba(230,229,224,.94); }
 h1, h2, h3, .headline { font-family: var(--narrow); font-weight: 700; margin: 0; }
 p { margin: 0; }
 a { color: inherit; }

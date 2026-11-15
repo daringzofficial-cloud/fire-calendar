@@ -220,3 +220,81 @@ select { width: auto; padding-right: 26px; }
 @media (prefers-reduced-motion: reduce) {
   #predPanel *, #predPanel *::after { transition: none !important; animation: none !important; }
 }
+/* Анимации интерфейса */
+:root { --ease: cubic-bezier(.2,.8,.2,1); --spring: cubic-bezier(.3,1.5,.5,1); }
+
+/* блоки проявляются при прокрутке */
+.anim main .panel:not(#predPanel), .anim main .verdict {
+  transition: opacity .6s ease calc(var(--bi, 0) * 80ms), transform .7s var(--ease) calc(var(--bi, 0) * 80ms);
+}
+.anim main .panel:not(#predPanel):not(.is-in), .anim main .verdict:not(.is-in) { opacity: 0; transform: translateY(26px); }
+
+/* шапка */
+.anim .top h1 { animation: a-rise .8s var(--ease) both; }
+.anim .top .sub { animation: a-rise .8s var(--ease) .12s both; }
+.anim .top .seg { animation: a-fade-k .6s ease .3s both; }
+
+/* карта: волна с запада на восток */
+.anim #map.a-sweep {
+  -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+          mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+  -webkit-mask-size: 300% 100%; mask-size: 300% 100%;
+  animation: a-sweep 1.5s var(--ease) .15s both;
+}
+@keyframes a-sweep { from { -webkit-mask-position: 100% 0; mask-position: 100% 0; } to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
+
+/* вердикт */
+.anim .verdict.is-in.a-run #vHead { animation: a-rise .6s var(--ease) both; }
+.anim .verdict.is-in.a-run #vHead .chip { animation: a-chip .7s var(--spring) .1s both; }
+.anim .verdict.is-in.a-run #vFacts p { animation: a-rise .55s var(--ease) var(--d, 0ms) both; }
+@keyframes a-chip { from { transform: scale(0); } 60% { transform: scale(1.35); } to { transform: scale(1); } }
+
+/* календарь */
+.anim #calendar .a-cell { transform-box: fill-box; transform-origin: center; }
+.anim .panel.is-in #calendar.a-run .a-cell { animation: a-cell .45s var(--spring) var(--d, 0ms) both; }
+.anim .panel.is-in #calendar.a-run .a-fade { animation: a-fade-k .35s ease var(--d, 0ms) both; }
+.anim .panel:not(.is-in) #calendar .a-cell, .anim .panel:not(.is-in) #calendar .a-fade { opacity: 0; }
+@keyframes a-cell { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.anim #calendar .cell { transition: filter .15s; }
+.anim #calendar .cell:hover { filter: brightness(1.08) saturate(1.1); }
+
+/* растущие полоски (календарь, «Последние дни») */
+.anim .a-grow-x { transform-box: fill-box; transform-origin: left center; }
+.anim .a-grow-y { transform-box: fill-box; transform-origin: center bottom; }
+.anim .is-in .a-run .a-grow-x, .anim .is-in.a-run .a-grow-x { animation: a-gx .8s var(--ease) var(--d, 0ms) both; }
+.anim .is-in .a-run .a-grow-y, .anim .is-in.a-run .a-grow-y { animation: a-gy .7s var(--ease) var(--d, 0ms) both; }
+.anim .panel:not(.is-in) .a-grow-x, .anim .panel:not(.is-in) .a-grow-y { transform: scale(0); }
+@keyframes a-gx { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes a-gy { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* графики: линии прорисовываются, точки появляются */
+.anim .a-draw { stroke-dasharray: 1; }
+.anim .is-in .a-run .a-draw, .anim .is-in.a-run .a-draw { animation: a-draw 1.4s var(--ease) var(--d, 0ms) both; }
+.anim .panel:not(.is-in) .a-draw { stroke-dashoffset: 1; }
+@keyframes a-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.anim .a-pop { transform-box: fill-box; transform-origin: center; }
+.anim .is-in .a-run .a-pop { animation: a-pop .45s var(--spring) var(--d, 0ms) both; }
+.anim .panel:not(.is-in) .a-pop { opacity: 0; }
+@keyframes a-pop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+
+/* «Последние дни»: карта свежих очагов */
+.anim #livePanel.is-in .live-map canvas { animation: a-zoom .9s var(--ease) .2s both; }
+.anim #livePanel.is-in .live-cmp { animation: a-rise .6s var(--ease) .5s both; }
+@keyframes a-zoom { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+
+/* «Как это посчитано» */
+.anim .panel.is-in #method li { animation: a-rise .5s var(--ease) var(--d, 0ms) both; }
+.anim .panel:not(.is-in) #method li { opacity: 0; }
+
+/* карточка месяца и кнопки */
+.anim #detail .big { transition: color .2s; }
+.anim .btn { transition: background .2s, transform .15s var(--spring); }
+.anim .btn:active { transform: scale(.96); }
+.anim .seg button { transition: background .25s, color .25s; }
+
+@keyframes a-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes a-fade-k { from { opacity: 0; } to { opacity: 1; } }
+
+/* плавное проявление для «Последних дней» */
+.anim #livePanel:not(.is-in) .a-fade { opacity: 0; }
+.anim #livePanel.is-in.a-run .a-fade { animation: a-fade-k .5s ease var(--d, 0ms) both; }

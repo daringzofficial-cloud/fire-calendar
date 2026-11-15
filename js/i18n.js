@@ -4,6 +4,7 @@ window.FireI18n = {
     locale: 'ru-RU',
     docTitle: 'Календарь пожарной активности: Казахстан',
     title: 'Календарь пожарной активности',
+    navMap: 'Карта', navPred: 'Прогноз', navCal: 'Календарь', navMethod: 'Метод',
     subtitle: 'Нормальный ли сейчас пожарный сезон в Казахстане? Спутниковые данные NASA за {y0}–{y1}, сведённые в один ряд.',
     noData: 'Не найден файл data/processed/grid.js. Запустите в корне проекта: python scripts/aggregate.py',
 
@@ -87,6 +88,7 @@ window.FireI18n = {
     locale: 'en-US',
     docTitle: 'Fire activity calendar: Kazakhstan',
     title: 'Fire activity calendar',
+    navMap: 'Map', navPred: 'Outlook', navCal: 'Calendar', navMethod: 'Method',
     subtitle: 'Is the fire season in Kazakhstan normal right now? NASA satellite data for {y0}–{y1}, brought into one consistent record.',
     noData: 'File data/processed/grid.js was not found. From the project root run: python scripts/aggregate.py',
 

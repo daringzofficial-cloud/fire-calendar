@@ -3,60 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#13110f">
   <title>Календарь пожарной активности: Казахстан</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="wrap">
-    <header class="top">
-      <div>
-        <h1 data-i18n="title"></h1>
-        <p class="sub" id="subtitle"></p>
+  <header class="bar">
+    <div class="bar-in">
+      <a class="brand" href="#top"><span class="brand-dot" aria-hidden="true"></span><h1 data-i18n="title"></h1></a>
+      <nav class="nav" aria-label="Разделы">
+        <a href="#s-map" data-i18n="navMap"></a>
+        <a href="#predPanel" data-i18n="navPred"></a>
+        <a href="#s-cal" data-i18n="navCal"></a>
+        <a href="#s-method" data-i18n="navMethod"></a>
+      </nav>
+      <div class="seg lang" role="group" aria-label="Язык / Language">
+        <button type="button" data-lang="ru" aria-pressed="true">RU</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
-      <div class="seg" role="group" aria-label="Язык / Language">
-        <button type="button" data-lang="ru" aria-pressed="true">Русский</button>
-        <button type="button" data-lang="en" aria-pressed="false">English</button>
-      </div>
-    </header>
+    </div>
+  </header>
 
+  <div class="wrap" id="top">
     <p class="fatal" id="fatal" hidden></p>
 
     <main id="app">
-      <div class="row row-top">
-        <section class="panel map-panel" aria-labelledby="regionTitle">
-          <div class="panel-head">
-            <h2 id="regionTitle" data-i18n="regionTitle"></h2>
-            <p class="hint" data-i18n="regionHint"></p>
+      <section class="hero">
+        <div class="hero-main">
+          <p class="lead" id="subtitle"></p>
+          <section class="verdict" aria-live="polite">
+            <p class="where" id="vWhere"></p>
+            <p class="headline" id="vHead"></p>
+            <div class="facts" id="vFacts"></div>
+            <p class="region-info" id="regionInfo"></p>
+          </section>
+        </div>
+        <section class="panel now" id="livePanel" aria-labelledby="liveTitle" hidden></section>
+      </section>
+
+      <section class="panel map-panel sect" id="s-map" aria-labelledby="regionTitle">
+        <div class="sect-head">
+          <h2 id="regionTitle" data-i18n="regionTitle"></h2>
+          <p class="hint" data-i18n="regionHint"></p>
+        </div>
+        <div id="mapview"></div>
+        <div hidden><canvas id="map"></canvas><div id="mapLegend"></div></div>
+        <form class="bbox" id="bboxForm" novalidate>
+          <label><span data-i18n="south"></span><input id="bS" type="number" step="0.25" min="40" max="56" inputmode="decimal"></label>
+          <label><span data-i18n="north"></span><input id="bN" type="number" step="0.25" min="40" max="56" inputmode="decimal"></label>
+          <label><span data-i18n="west"></span><input id="bW" type="number" step="0.25" min="46" max="88" inputmode="decimal"></label>
+          <label><span data-i18n="east"></span><input id="bE" type="number" step="0.25" min="46" max="88" inputmode="decimal"></label>
+          <div class="bbox-actions">
+            <button type="submit" class="btn" data-i18n="apply"></button>
+            <button type="button" class="btn btn-quiet" id="resetBtn" data-i18n="reset"></button>
           </div>
-          <div id="mapview"></div>
-          <div hidden><canvas id="map"></canvas><div id="mapLegend"></div></div>
-          <form class="bbox" id="bboxForm" novalidate>
-            <label><span data-i18n="south"></span><input id="bS" type="number" step="0.25" min="40" max="56" inputmode="decimal"></label>
-            <label><span data-i18n="north"></span><input id="bN" type="number" step="0.25" min="40" max="56" inputmode="decimal"></label>
-            <label><span data-i18n="west"></span><input id="bW" type="number" step="0.25" min="46" max="88" inputmode="decimal"></label>
-            <label><span data-i18n="east"></span><input id="bE" type="number" step="0.25" min="46" max="88" inputmode="decimal"></label>
-            <div class="bbox-actions">
-              <button type="submit" class="btn" data-i18n="apply"></button>
-              <button type="button" class="btn btn-quiet" id="resetBtn" data-i18n="reset"></button>
-            </div>
-          </form>
-          <p class="error" id="bboxError" role="alert" hidden></p>
-        </section>
+        </form>
+        <p class="error" id="bboxError" role="alert" hidden></p>
+      </section>
 
-        <section class="verdict" aria-live="polite">
-          <p class="where" id="vWhere"></p>
-          <p class="headline" id="vHead"></p>
-          <div class="facts" id="vFacts"></div>
-          <p class="region-info" id="regionInfo"></p>
-        </section>
-      </div>
+      <section class="panel sect" id="predPanel" aria-labelledby="predTitle" hidden></section>
 
-      <section class="panel" id="livePanel" aria-labelledby="liveTitle" hidden></section>
-
-      <section class="panel" id="predPanel" aria-labelledby="predTitle" hidden></section>
-
-      <section class="panel" aria-labelledby="calTitle">
-        <div class="panel-head">
+      <section class="panel sect" id="s-cal" aria-labelledby="calTitle">
+        <div class="sect-head">
           <h2 id="calTitle" data-i18n="calTitle"></h2>
           <p class="hint" data-i18n="calHow"></p>
         </div>
@@ -79,12 +91,12 @@
             <select id="base"></select>
           </div>
           <div class="field field-end">
-            <button type="button" class="btn" id="csvBtn" data-i18n="csv"></button>
+            <button type="button" class="btn btn-quiet" id="csvBtn" data-i18n="csv"></button>
             <button type="button" class="btn btn-quiet" id="pngBtn" data-i18n="png"></button>
           </div>
         </div>
-        <div class="row row-cal">
-          <div>
+        <div class="cal-grid">
+          <div class="cal-main">
             <div class="cal-scroll">
               <div id="calendar" tabindex="0"></div>
             </div>
@@ -94,9 +106,9 @@
         </div>
       </section>
 
-      <div class="row row-bottom">
-        <section class="panel" aria-labelledby="valTitle">
-          <div class="panel-head">
+      <div class="split" id="s-method">
+        <section class="panel sect" aria-labelledby="valTitle">
+          <div class="sect-head">
             <h2 id="valTitle" data-i18n="valTitle"></h2>
             <p class="hint" data-i18n="valLead"></p>
           </div>
@@ -104,8 +116,8 @@
           <div id="valChart"></div>
           <p class="readout" id="valRead"></p>
         </section>
-        <section class="panel" aria-labelledby="methodTitle">
-          <div class="panel-head">
+        <section class="panel sect" aria-labelledby="methodTitle">
+          <div class="sect-head">
             <h2 id="methodTitle" data-i18n="methodTitle"></h2>
             <p class="hint" data-i18n="methodHow"></p>
           </div>

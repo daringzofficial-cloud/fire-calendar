@@ -145,14 +145,85 @@
     each(ul.children, function (li, i) { li.style.setProperty('--d', i * 70 + 'ms'); });
   }
 
+  /* ================= постоянные (цикличные) анимации ================= */
+
+  // календарь: пульсирующая рамка у последнего полного месяца
+  function loopCalendar(box) {
+    var M = window.FIRE_MODEL, svg = box.querySelector('svg');
+    if (!M || !svg) return;
+    var cell = svg.querySelector('rect.cell[data-mi="' + M.lastComplete + '"]');
+    if (!cell) return;
+    var ring = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    ['x', 'y', 'width', 'height'].forEach(function (a) { ring.setAttribute(a, cell.getAttribute(a)); });
+    ring.setAttribute('rx', '3');
+    ring.setAttribute('class', 'a-latest');
+    ring.setAttribute('pointer-events', 'none');
+    var pin = svg.querySelector('#hoverRing');
+    svg.insertBefore(ring, pin || null);
+  }
+
+  // график проверки: светящаяся «комета» бежит по каждой линии
+  function loopVal(box) {
+    var svg = box.querySelector('svg');
+    if (!svg) return;
+    each(svg.querySelectorAll('path.a-draw'), function (p, i) {
+      var c = p.cloneNode(false);
+      c.setAttribute('class', 'a-comet');
+      c.style.setProperty('--d', (1.6 + i * 1.3) + 's');
+      p.parentNode.insertBefore(c, p.nextSibling);
+    });
+  }
+
+  // «Последние дни»: значок «в эфире», дышащий столбец сегодняшнего дня
+  function loopLive(panel) {
+    var hint = panel.querySelector('.panel-head .hint');
+    if (hint && !hint.querySelector('.live-dot')) {
+      var dot = document.createElement('span');
+      dot.className = 'live-dot';
+      dot.setAttribute('aria-hidden', 'true');
+      hint.insertBefore(dot, hint.firstChild);
+    }
+    var bars = panel.querySelectorAll('.live-chart svg rect');
+    if (bars.length) bars[bars.length - 1].classList.add('a-today');
+  }
+
+  // карта свежих очагов: кольца расходятся от очагов последних суток
+  function loopLiveMap(hot) {
+    var wrap = document.querySelector('.live-map'), cv = document.getElementById('liveMap');
+    if (!wrap || !cv || !hot) return;
+    var layer = wrap.querySelector('.ping-layer');
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'ping-layer';
+      layer.setAttribute('aria-hidden', 'true');
+      wrap.appendChild(layer);
+    }
+    layer.style.width = cv.style.width;
+    layer.style.height = cv.style.height;
+    layer.innerHTML = '';
+    hot.slice(-40).forEach(function (p, i) {
+      var s = document.createElement('span');
+      s.style.left = p.x + 'px';
+      s.style.top = p.y + 'px';
+      s.style.animationDelay = (i * 0.37 % 2.4).toFixed(2) + 's';
+      layer.appendChild(s);
+    });
+  }
+
   function init() {
     watchBlocks();
     var cal = $('calendar'), val = $('valChart'), live = $('livePanel'), method = $('method');
-    if (cal) { prepCalendar(cal); onChange(cal, prepCalendar); }
-    if (val) { prepVal(val); onChange(val, prepVal); }
+    var calAll = function (b) { prepCalendar(b); loopCalendar(b); };
+    var valAll = function (b) { prepVal(b); loopVal(b); };
+    var liveAll = function (p) { prepLive(p); loopLive(p); };
+    if (cal) { calAll(cal); onChange(cal, calAll); }
+    if (val) { valAll(val); onChange(val, valAll); }
     if (method) { prepMethod(method); onChange(method, prepMethod); }
+    document.addEventListener('live:map', function (e) { loopLiveMap(e.detail); });
+    if (window.FIRE_LIVE_HOT) loopLiveMap(window.FIRE_LIVE_HOT);
     if (live) {
-      onChange(live, prepLive);
+      if (live.children.length) loopLive(live);
+      onChange(live, liveAll);
       live.addEventListener('anim:in', function () { replay(live, 'a-run'); countUp(live.querySelector('.live-num'), 1100); });
     }
     var vh = $('vHead');

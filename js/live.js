@@ -112,13 +112,18 @@
       g.fillRect(X(c[1]), Yy(c[0] + M.g), Math.ceil(M.g / (e - w) * cw) + 0.5, Math.ceil(M.g / (n - s) * ch) + 0.5);
     });
     var newest = data.days[data.days.length - 1].d, prev = data.days[data.days.length - 2].d;
+    var hot = [];
     data.cells.slice().sort(function (a, b) { return a[3] < b[3] ? -1 : 1; }).forEach(function (c) {
       var fresh = c[3] === newest || c[3] === prev;
+      if (fresh) hot.push({ x: X(c[1] + M.g / 2), y: Yy(c[0] + M.g / 2) });
       g.beginPath();
       g.arc(X(c[1] + M.g / 2), Yy(c[0] + M.g / 2), Math.min(7, 2.5 + Math.sqrt(c[2]) * 1.2), 0, 6.2832);
       g.fillStyle = fresh ? 'rgba(163,42,28,.9)' : 'rgba(163,42,28,.4)';
       g.fill();
     });
+    // точки за последние сутки отдаём модулю анимаций (пульсация поверх карты)
+    window.FIRE_LIVE_HOT = hot;
+    document.dispatchEvent(new CustomEvent('live:map', { detail: hot }));
   }
 
   function init() {

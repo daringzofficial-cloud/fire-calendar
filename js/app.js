@@ -38,6 +38,7 @@
   }
 
   var M = C.build(window.FIRE_GRID);
+  window.FIRE_MODEL = M;
   var cur = {};
   state.yFrom = M.bY0; state.yTo = M.y1; state.pin = M.lastComplete;
 

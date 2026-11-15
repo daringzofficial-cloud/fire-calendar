@@ -129,3 +129,14 @@ select { width: auto; padding-right: 26px; }
   .bbox { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bbox-actions { grid-column: 1 / -1; }
 }
+
+/* Блок «Последние дни» */
+.live-grid { display: grid; grid-template-columns: 200px minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px 28px; align-items: start; }
+.live-num { font-family: var(--display); font-size: 56px; line-height: 1; color: var(--ink); }
+.live-lbl { color: var(--ink-3); font-size: 14px; margin-top: 4px; }
+.live-cmp { font-size: 18px; font-weight: 600; margin-top: 12px; color: var(--ink); }
+.live-cap { color: var(--ink-2); font-size: 14px; margin-bottom: 4px; }
+.live-map canvas { display: block; width: 100%; border: 1px solid var(--line); border-radius: 4px; }
+.live-map .hint { margin-top: 6px; }
+.live-note { margin-top: 14px; }
+@media (max-width: 900px) { .live-grid { grid-template-columns: 1fr; } .live-num { font-size: 44px; } }
